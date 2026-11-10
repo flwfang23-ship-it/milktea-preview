@@ -73,9 +73,9 @@ body{
 @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 
 /* ── 活动主卡 ── */
-.hero{position:relative;padding:22px 22px 20px}
+.hero{position:relative;padding:18px}
 .hero .h-title{margin-top:2px}
-.hero-tag{display:inline-flex;align-items:center;gap:5px;margin-top:12px;
+.hero-tag{display:inline-flex;align-items:center;gap:5px;margin-top:10px;
   padding:5px 10px;border-radius:999px;background:var(--green-soft);
   font-size:11px;font-weight:700;color:var(--green-d);letter-spacing:.01em}
 .hero-tag svg{opacity:.85}
@@ -89,13 +89,16 @@ body{
 .cd-sep{font-family:var(--num);font-size:22px;font-weight:700;color:var(--ink-3);line-height:1;margin:0 2px}
 .cd-unit{font-size:10.5px;color:var(--ink-3);font-weight:600;margin-left:2px}
 
-.h-actions{margin-top:16px;display:flex;align-items:center;gap:10px}
-.h-btn{height:36px;padding:0 14px;border-radius:999px;
+.hero-divider{height:1px;background:var(--line);margin:14px 0 12px}
+
+.h-actions{display:flex;align-items:center;gap:8px}
+.h-btn{flex:1;height:36px;padding:0 14px;border-radius:999px;
   border:1px solid var(--line-2);background:#fff;color:var(--ink-2);
   font-family:var(--sans);font-size:12px;font-weight:700;cursor:pointer;
-  display:inline-flex;align-items:center;gap:5px}
+  display:inline-flex;align-items:center;justify-content:center;gap:5px}
 .h-btn:active{background:#FCFCFD}
-.h-btn svg{color:var(--green-d)}
+.h-btn svg{color:var(--green-d);flex:none}
+.h-btn .btn-text{letter-spacing:.01em}
 
 .h-badge{position:absolute;right:22px;top:22px;width:72px;height:72px;border-radius:50%;
   border:1.5px solid rgba(21,154,80,.52);color:var(--green-d);
@@ -285,10 +288,16 @@ body{
         </div>
       </div>
 
+      <div class="hero-divider"></div>
+
       <div class="h-actions">
         <button class="h-btn" data-act="reward-list">
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 7c0-2 2-4 4-4s4 2 4 4v3H2z"/><path d="M4 4V3a2 2 0 0 1 4 0v1"/></svg>
-          奖励排行 · ¥15 起
+          <span class="btn-text">奖励排行</span>
+        </button>
+        <button class="h-btn" data-act="winners">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="6" cy="4.5" r="2.5"/><path d="M2.5 10.5c.8-1.2 2-2 3.5-2s2.7.8 3.5 2"/></svg>
+          <span class="btn-text">中奖通知</span>
         </button>
       </div>
 
@@ -370,6 +379,25 @@ body{
     <button class="btn-primary" data-close>我知道了</button>
   </section>
 
+  <section class="sheet" id="sheet-winners" aria-hidden="true" aria-label="中奖通知">
+    <div class="sheet-bar"></div>
+    <div class="sheet-head">
+      <h2>中奖通知</h2>
+      <button class="sheet-close" data-close aria-label="关闭">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 3l8 8M11 3l-8 8"/></svg>
+      </button>
+    </div>
+    <p class="sheet-meta">上周奶茶争霸 · 已结算</p>
+    <div class="reward-list">
+      <div class="reward-row"><div class="reward-info"><b>@去糖去冰拿铁</b><span>上周助力 128 排第 1</span></div><div class="amount">¥15</div></div>
+      <div class="reward-row"><div class="reward-info"><b>@开心果蓝莓茉莉茶</b><span>上周助力 96 排第 2</span></div><div class="amount">¥10</div></div>
+      <div class="reward-row"><div class="reward-info"><b>@抹茶拿铁</b><span>上周助力 84 排第 3</span></div><div class="amount">¥10</div></div>
+      <div class="reward-row"><div class="reward-info"><b>@百香果柠檬茶</b><span>上周助力 72 排第 4</span></div><div class="amount">¥5</div></div>
+      <div class="reward-row"><div class="reward-info"><b>@大口径绿茶</b><span>上周助力 61 排第 5</span></div><div class="amount">¥5</div></div>
+    </div>
+    <button class="btn-primary" data-close>我知道了</button>
+  </section>
+
   <div class="toast" id="toast" role="status"></div>
 
 </div>
@@ -416,6 +444,7 @@ body{
     var act = t.getAttribute('data-act');
     if (act === 'rules') openSheet('sheet-rules');
     else if (act === 'reward-list') openSheet('sheet-reward');
+    else if (act === 'winners') openSheet('sheet-winners');
     else if (act === 'back') toast('已返回上一页');
   });
 
