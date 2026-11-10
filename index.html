@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#F7F7F7">
+<title>奶茶争霸赛</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#F7F7F7;
+  --card:#FFFFFF;
+  --ink:#16181D;
+  --ink-2:#5E636B;
+  --ink-3:#9BA1A9;
+  --line:#EDEEF1;
+  --line-2:#E2E4E8;
+  --green:#2EC46B;
+  --green-d:#159A50;
+  --green-soft:#EDFBF3;
+  --green-line:#CFEFDD;
+  --red:#D8402F;
+  --r-lg:20px;
+  --r-md:16px;
+  --shadow:0 1px 2px rgba(20,24,30,.04),0 8px 22px rgba(20,24,30,.05);
+  --num:'Archivo','PingFang SC',sans-serif;
+  --sans:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+}
+html,body{height:100%}
+body{
+  font-family:var(--sans);color:var(--ink);background:#E9EBEF;
+  height:100dvh;overflow:hidden;display:flex;align-items:center;justify-content:center;
+}
+.phone{
+  position:relative;display:flex;flex-direction:column;
+  width:100%;max-width:414px;height:100dvh;background:var(--bg);overflow:hidden;
+}
+@media(min-width:460px){
+  .phone{height:min(896px,calc(100dvh - 56px));border-radius:40px;
+    box-shadow:0 30px 70px rgba(20,24,30,.18),0 0 0 1px rgba(20,24,30,.05)}
+}
+
+.statusbar{display:flex;align-items:center;justify-content:space-between;
+  padding:13px 24px 0;font-size:12.5px;font-weight:700;letter-spacing:.01em;flex:none}
+.sb-icons{display:flex;align-items:center;gap:5px;color:var(--ink)}
+.sb-icons svg{display:block}
+
+.appbar{display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:12px 16px 8px;flex:none}
+.appbar h1{font-size:19px;font-weight:700;letter-spacing:-.01em;line-height:1.25;white-space:nowrap}
+.appbar h1 em{font-style:normal;position:relative;z-index:0}
+.appbar h1 em::after{content:"";position:absolute;left:-1px;right:-1px;bottom:2px;height:7px;
+  border-radius:3px;background:rgba(46,196,107,.24);z-index:-1}
+.capsule{display:flex;align-items:center;gap:9px;height:30px;padding:0 10px;
+  border:1px solid var(--line-2);border-radius:999px;background:#fff;color:var(--ink-2);
+  pointer-events:none;flex:none}
+.capsule i{width:1px;height:12px;background:var(--line-2);display:block}
+.back-btn{width:34px;height:34px;border-radius:50%;border:1px solid var(--line-2);
+  background:#fff;display:grid;place-items:center;color:var(--ink-2);cursor:pointer;flex:none}
+.back-btn:active{background:#FCFCFD}
+
+.page{flex:1;overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;gap:12px;
+  padding:6px 16px 30px;scrollbar-width:none}
+.page > *{flex:0 0 auto}
+.page::-webkit-scrollbar{display:none}
+
+.card{background:var(--card);border-radius:var(--r-lg);box-shadow:var(--shadow);padding:18px}
+.card,.p-row,.tab-btn{animation:rise .46s cubic-bezier(.2,.8,.3,1) both;
+  animation-delay:calc(var(--i,0) * 65ms)}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* ── 活动主卡 ── */
+.hero{position:relative}
+.h-kicker{font-size:10.5px;font-weight:700;color:var(--ink-3);letter-spacing:.16em;
+  text-transform:uppercase}
+.h-title{margin-top:8px;font-size:24px;font-weight:700;letter-spacing:-.015em;line-height:1.32}
+.h-title em{font-style:normal;position:relative;z-index:0}
+.h-title em::after{content:"";position:absolute;left:-2px;right:-2px;bottom:3px;height:8px;
+  border-radius:4px;background:rgba(46,196,107,.24);z-index:-1}
+
+.countdown{margin-top:14px;display:flex;align-items:baseline;gap:3px;flex-wrap:wrap}
+.cd-num{font-family:var(--num);font-size:30px;font-weight:700;letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums;line-height:1;color:var(--green-d)}
+.cd-sep{font-family:var(--num);font-size:22px;font-weight:700;color:var(--ink-3);line-height:1;margin:0 2px}
+.cd-unit{font-size:10.5px;color:var(--ink-3);font-weight:600;margin-left:2px}
+
+.h-actions{margin-top:14px;display:flex;align-items:center;gap:10px}
+.h-btn{height:36px;padding:0 14px;border-radius:999px;
+  border:1px solid var(--line-2);background:#fff;color:var(--ink-2);
+  font-family:var(--sans);font-size:12px;font-weight:700;cursor:pointer;
+  display:inline-flex;align-items:center;gap:5px}
+.h-btn:active{background:#FCFCFD}
+.h-btn svg{color:var(--green-d)}
+
+.h-badge{position:absolute;right:18px;top:18px;width:72px;height:72px;border-radius:50%;
+  border:1.5px solid rgba(21,154,80,.52);color:var(--green-d);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  transform:rotate(-7deg);user-select:none;background:rgba(255,255,255,.6);backdrop-filter:blur(4px)}
+.h-badge::before{content:"";position:absolute;inset:5px;border-radius:50%;
+  border:1px dashed rgba(21,154,80,.42)}
+.h-badge b{font-size:10.5px;font-weight:700;letter-spacing:.12em;line-height:1}
+.h-badge span{font-family:var(--num);font-size:8px;font-weight:700;letter-spacing:.14em;opacity:.72}
+.h-badge small{font-size:7px;font-weight:700;letter-spacing:.1em;opacity:.55;margin-top:2px}
+
+/* ── Tab ── */
+.tab-bar{display:flex;align-items:center;gap:4px;padding:4px 0 2px}
+.tab-btn{flex:none;height:32px;padding:0 12px;border-radius:999px;
+  border:0;background:transparent;color:var(--ink-3);
+  font-family:var(--sans);font-size:13px;font-weight:700;cursor:pointer;
+  position:relative;transition:color .15s}
+.tab-btn:active{opacity:.6}
+.tab-btn.on{color:var(--ink)}
+.tab-btn.on::after{content:"";position:absolute;left:50%;bottom:-3px;transform:translateX(-50%);
+  width:18px;height:3px;border-radius:2px;background:var(--green)}
+
+/* ── 排行榜头 ── */
+.sec-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.sec-title{position:relative;padding-left:11px;font-size:16px;font-weight:700;letter-spacing:-.01em}
+.sec-title::before{content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);
+  width:3px;height:14px;border-radius:2px;background:var(--green)}
+.sec-more{font-size:11.5px;color:var(--ink-3)}
+
+/* ── 排行项目（排名头像融合） ── */
+.p-row{display:flex;align-items:center;gap:12px;padding:14px 14px;cursor:pointer;min-height:92px;
+  background:var(--card);border-radius:var(--r-md);box-shadow:var(--shadow);
+  animation:rise .46s cubic-bezier(.2,.8,.3,1) both;animation-delay:calc(var(--i,0) * 65ms)}
+.p-row:active{background:#FCFCFD}
+
+/* 头像容器：排名叠在左下角 */
+.avatar-wrap{position:relative;width:38px;height:38px;flex:none}
+.avatar{width:100%;height:100%;border-radius:50%;overflow:hidden;
+  border:1.5px solid var(--line);background:#fff;display:block}
+.avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.rank-badge{position:absolute;left:-3px;bottom:-4px;min-width:16px;height:16px;
+  padding:0 3px;border-radius:5px;background:#F3F4F6;
+  display:grid;place-items:center;
+  font-family:var(--num);font-size:9px;font-weight:800;color:var(--ink-3);line-height:1;
+  box-shadow:0 1px 2px rgba(20,24,30,.08)}
+.rank-badge.top{background:var(--green-d);color:#fff}
+.rank-badge.top-2{background:#C4A45B;color:#fff}
+.rank-badge.top-3{background:#B87333;color:#fff}
+.rank-badge.top-1{min-width:20px;height:18px;font-size:10px;
+  background:var(--green-d);color:#fff}
+
+.photo{width:80px;height:80px;border-radius:16px;flex:none;overflow:hidden;
+  background:var(--bg)}
+.photo img{width:100%;height:100%;object-fit:cover;display:block}
+.p-body{flex:1;min-width:0;padding-right:6px}
+.p-name{font-size:14px;font-weight:700;letter-spacing:-.01em}
+.p-desc{margin-top:4px;font-size:11.5px;color:var(--ink-3);
+  display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;
+  overflow:hidden;line-height:1.4}
+.p-right{flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+.p-prize{font-family:var(--num);font-size:15px;font-weight:700;color:var(--green-d);
+  font-variant-numeric:tabular-nums;line-height:1;letter-spacing:-.01em}
+.p-boost-wrap{display:flex;align-items:center;gap:3px}
+.p-boost{font-family:var(--num);font-size:12px;font-weight:600;color:var(--ink-3);
+  font-variant-numeric:tabular-nums;line-height:1;letter-spacing:-.01em}
+.p-boost-label{font-size:9.5px;color:var(--ink-3);font-weight:500;line-height:1}
+
+/* 底部发起按钮 */
+.cta-wrap{position:sticky;bottom:0;left:-16px;right:-16px;padding:10px 16px 20px;
+  background:linear-gradient(to top,rgba(247,247,247,1) 60%,rgba(247,247,247,0));
+  margin:0 -16px -30px;pointer-events:none}
+.cta-wrap .btn-primary{pointer-events:auto}
+
+/* ── 规则入口 ── */
+.rule-row{display:flex;align-items:center;justify-content:space-between;
+  height:54px;padding:0 18px;background:#fff;border-radius:var(--r-md);
+  box-shadow:var(--shadow);cursor:pointer;font-size:13.5px;color:var(--ink-2);
+  border:0;width:100%;font-family:var(--sans);text-align:left}
+.rule-row:active{background:#FCFCFD}
+.foot{text-align:center;font-size:11px;color:var(--ink-3);padding:4px 0 8px;letter-spacing:.01em}
+
+/* ── 抽屉 ── */
+.mask{position:absolute;inset:0;background:rgba(18,20,24,.38);opacity:0;
+  pointer-events:none;transition:opacity .24s ease;z-index:30}
+.mask.on{opacity:1;pointer-events:auto}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;
+  border-radius:24px 24px 0 0;padding:10px 20px 26px;z-index:31;
+  transform:translateY(101%);transition:transform .3s cubic-bezier(.2,.9,.3,1);
+  max-height:76%;overflow-y:auto;scrollbar-width:none}
+.sheet::-webkit-scrollbar{display:none}
+.sheet.on{transform:translateY(0)}
+.sheet-bar{width:36px;height:4px;border-radius:99px;background:#DCDEE3;margin:0 auto 16px}
+.sheet-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.sheet-head h2{font-size:18px;font-weight:700;letter-spacing:-.01em}
+.sheet-close{width:30px;height:30px;border-radius:50%;border:0;background:#F3F4F6;
+  color:var(--ink-2);display:grid;place-items:center;cursor:pointer;flex:none}
+.sheet-close:active{background:#EAEBEE}
+.sheet-meta{margin-top:6px;font-size:11.5px;color:var(--ink-3)}
+.rules{margin-top:14px;list-style:none;counter-reset:r}
+.rules li{position:relative;counter-increment:r;padding-left:26px;font-size:13px;
+  line-height:1.68;color:var(--ink-2);margin-bottom:10px}
+.rules li::before{content:counter(r);position:absolute;left:0;top:2px;width:17px;height:17px;
+  border-radius:50%;background:var(--green-soft);color:var(--green-d);font-family:var(--num);
+  font-size:10.5px;font-weight:700;display:grid;place-items:center}
+
+.reward-list{margin-top:14px}
+.reward-row{display:flex;align-items:center;gap:14px;padding:14px 0}
+.reward-row + .reward-row{border-top:1px solid var(--line)}
+.reward-info{flex:1;min-width:0}
+.reward-info b{font-size:14px;font-weight:700;letter-spacing:-.01em}
+.reward-info span{display:block;margin-top:2px;font-size:12px;color:var(--ink-2)}
+.reward-row .amount{font-family:var(--num);font-size:18px;font-weight:800;
+  color:var(--green-d);font-variant-numeric:tabular-nums;line-height:1}
+
+.toast{position:absolute;left:50%;bottom:92px;transform:translate(-50%,10px);
+  background:rgba(22,24,29,.92);color:#fff;font-size:12.5px;padding:10px 16px;
+  border-radius:999px;white-space:nowrap;opacity:0;pointer-events:none;
+  transition:opacity .22s ease,transform .22s ease;z-index:40}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+.btn-primary{width:100%;height:52px;border:0;border-radius:999px;background:var(--green);
+  color:#fff;font-family:var(--sans);font-size:17px;font-weight:800;letter-spacing:.08em;
+  cursor:pointer;box-shadow:0 7px 18px rgba(46,196,107,.28);
+  transition:transform .12s ease,box-shadow .12s ease,filter .12s ease}
+.btn-primary:active{transform:translateY(1px);box-shadow:0 3px 10px rgba(46,196,107,.22);filter:brightness(.97)}
+.sheet .btn-primary{margin-top:8px}
+.btn-primary .cta-text{display:inline-block;min-width:24px;transition:none}
+
+@media(max-width:360px){
+  .cd-num{font-size:26px}
+  .photo{width:64px;height:64px;border-radius:14px}
+  .avatar-wrap{width:34px;height:34px}
+  .h-title{font-size:21px}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+<div class="phone" id="phone">
+
+  <div class="statusbar">
+    <span>9:41</span>
+    <div class="sb-icons" aria-hidden="true">
+      <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></svg>
+      <svg width="15" height="11" viewBox="0 0 15 11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M1 3.6a9.5 9.5 0 0 1 13 0"/><path d="M3.6 6.3a6 6 0 0 1 7.8 0"/><path d="M6.2 9a2.4 2.4 0 0 1 2.6 0"/></svg>
+      <svg width="24" height="11" viewBox="0 0 24 11" fill="none"><rect x=".5" y=".5" width="19" height="10" rx="3" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="15" height="7" rx="1.6" fill="currentColor"/><path d="M21.4 4v3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity=".5"/></svg>
+    </div>
+  </div>
+
+  <header class="appbar">
+    <button class="back-btn" data-act="back" aria-label="返回">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3.5 4.5 7 9 10.5"/></svg>
+    </button>
+    <h1>奶茶争霸赛</h1>
+    <div class="capsule" aria-hidden="true">
+      <svg width="16" height="4" viewBox="0 0 16 4" fill="currentColor"><circle cx="2" cy="2" r="1.6"/><circle cx="8" cy="2" r="1.6"/><circle cx="14" cy="2" r="1.6"/></svg>
+      <i></i>
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="5.4"/><circle cx="7" cy="7" r="1.6" fill="currentColor" stroke="none"/></svg>
+    </div>
+  </header>
+
+  <main class="page">
+
+    <!-- 活动主卡 -->
+    <section class="card hero" style="--i:0">
+      <h2 class="h-title">这周的奶茶<em>我请客!</em></h2>
+
+      <div class="countdown" id="cd">
+        <span class="cd-num" data-cd="d">0</span><span class="cd-unit">天</span>
+        <span class="cd-sep">:</span>
+        <span class="cd-num" data-cd="h">20</span><span class="cd-unit">时</span>
+        <span class="cd-sep">:</span>
+        <span class="cd-num" data-cd="m">26</span><span class="cd-unit">分</span>
+        <span class="cd-sep">:</span>
+        <span class="cd-num" data-cd="s">05</span><span class="cd-unit">秒</span>
+      </div>
+
+      <div class="h-actions">
+        <button class="h-btn" data-act="reward-list">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 7c0-2 2-4 4-4s4 2 4 4v3H2z"/><path d="M4 4V3a2 2 0 0 1 4 0v1"/></svg>
+          奖励排行
+        </button>
+      </div>
+
+      <div class="h-badge" aria-hidden="true">
+        <b>奶茶争霸</b>
+        <span>WEEKLY</span>
+        <small>SINCE 2026</small>
+      </div>
+    </section>
+
+    <!-- 往期活动 Tab -->
+    <div class="tab-bar" role="tablist" style="--i:1">
+      <button class="tab-btn on" data-tab="cur" role="tab" aria-selected="true">本期</button>
+      <button class="tab-btn" data-tab="w1" role="tab">第2周</button>
+      <button class="tab-btn" data-tab="w2" role="tab">第1周</button>
+      <button class="tab-btn" data-tab="w3" role="tab">第0周</button>
+    </div>
+
+    <!-- 排行榜（按助力数排名） -->
+    <div class="sec-head" style="--i:2">
+      <h2 class="sec-title" id="rankTitle">本周免费榜</h2>
+      <span class="sec-more" id="rankMore">共 62 人参赛</span>
+    </div>
+
+    <div class="p-row" style="--i:3"><div class="avatar-wrap"><span class="avatar"><img src="avatar1.jpg" alt=""></span><span class="rank-badge top top-1">1</span></div><span class="photo"><img src="milktea3.jpg" alt=""></span><div class="p-body"><div class="p-name">去糖去冰拿铁</div><div class="p-desc">#阿水大杯茶 招牌拿铁，茶底浓郁奶味醇厚</div></div><div class="p-right"><div class="p-prize">¥15</div><div class="p-boost-wrap"><span class="p-boost">128</span><span class="p-boost-label">助力</span></div></div></div>
+      <div class="p-row" style="--i:4"><div class="avatar-wrap"><span class="avatar"><img src="avatar2.jpg" alt=""></span><span class="rank-badge top top-2">2</span></div><span class="photo"><img src="milktea1.webp" alt=""></span><div class="p-body"><div class="p-name">开心果蓝莓茉莉茶</div><div class="p-desc">#蜜雪冰城 蓝莓果肉饱满，开心果碎脆甜</div></div><div class="p-right"><div class="p-prize">¥10</div><div class="p-boost-wrap"><span class="p-boost">96</span><span class="p-boost-label">助力</span></div></div></div>
+      <div class="p-row" style="--i:5"><div class="avatar-wrap"><span class="avatar"><img src="avatar3.png" alt=""></span><span class="rank-badge top top-3">3</span></div><span class="photo"><img src="milktea2.webp" alt=""></span><div class="p-body"><div class="p-name">抹茶拿铁</div><div class="p-desc">#古茗 宇治抹茶，微苦回甘，夏天喝超清爽</div></div><div class="p-right"><div class="p-prize">¥10</div><div class="p-boost-wrap"><span class="p-boost">84</span><span class="p-boost-label">助力</span></div></div></div>
+      <div class="p-row" style="--i:6"><div class="avatar-wrap"><span class="avatar"><img src="avatar4.jpg" alt=""></span><span class="rank-badge top">4</span></div><span class="photo"><img src="milktea3.jpg" alt=""></span><div class="p-body"><div class="p-name">百香果柠檬茶</div><div class="p-desc">#甜啦啦 酸甜解腻，夏天必备</div></div><div class="p-right"><div class="p-prize">¥5</div><div class="p-boost-wrap"><span class="p-boost">72</span><span class="p-boost-label">助力</span></div></div></div>
+      <div class="p-row" style="--i:7"><div class="avatar-wrap"><span class="avatar"><img src="avatar1.jpg" alt=""></span><span class="rank-badge top">5</span></div><span class="photo"><img src="milktea1.webp" alt=""></span><div class="p-body"><div class="p-name">大口径绿茶</div><div class="p-desc">#沪上阿姨 茉莉飘雪，茶汤清亮回甘</div></div><div class="p-right"><div class="p-prize">¥5</div><div class="p-boost-wrap"><span class="p-boost">61</span><span class="p-boost-label">助力</span></div></div></div>
+      <div class="p-row" style="--i:8"><div class="avatar-wrap"><span class="avatar"><img src="avatar2.jpg" alt=""></span><span class="rank-badge top">6</span></div><span class="photo"><img src="milktea2.webp" alt=""></span><div class="p-body"><div class="p-name">桑葚酸奶昔</div><div class="p-desc">#茶百道 桑葚果肉满满，酸奶醇厚</div></div><div class="p-right"><div class="p-prize">¥5</div><div class="p-boost-wrap"><span class="p-boost">53</span><span class="p-boost-label">助力</span></div></div></div>
+      <div class="p-row" style="--i:9"><div class="avatar-wrap"><span class="avatar"><img src="avatar3.png" alt=""></span><span class="rank-badge">7</span></div><span class="photo"><img src="milktea3.jpg" alt=""></span><div class="p-body"><div class="p-name">薄荷巧克力冰沙</div><div class="p-desc">#星巴克 薄荷冰爽，巧克力浓郁</div></div><div class="p-right"><div class="p-prize">¥2</div><div class="p-boost-wrap"><span class="p-boost">47</span><span class="p-boost-label">助力</span></div></div></div>
+      <div class="p-row" style="--i:10"><div class="avatar-wrap"><span class="avatar"><img src="avatar4.jpg" alt=""></span><span class="rank-badge">8</span></div><span class="photo"><img src="milktea1.webp" alt=""></span><div class="p-body"><div class="p-name">抹茶奶茶</div><div class="p-desc">#奈雪的茶 抹茶微苦不涩，奶盖绵密</div></div><div class="p-right"><div class="p-prize">¥2</div><div class="p-boost-wrap"><span class="p-boost">39</span><span class="p-boost-label">助力</span></div></div></div>
+      <div class="p-row" style="--i:11"><div class="avatar-wrap"><span class="avatar"><img src="avatar1.jpg" alt=""></span><span class="rank-badge">9</span></div><span class="photo"><img src="milktea2.webp" alt=""></span><div class="p-body"><div class="p-name">小黄油拿铁</div><div class="p-desc">#瑞幸咖啡 黄油香浓，咖啡醇厚</div></div><div class="p-right"><div class="p-prize">¥2</div><div class="p-boost-wrap"><span class="p-boost">31</span><span class="p-boost-label">助力</span></div></div></div>
+      <div class="p-row" style="--i:12"><div class="avatar-wrap"><span class="avatar"><img src="avatar2.jpg" alt=""></span><span class="rank-badge">10</span></div><span class="photo"><img src="milktea3.jpg" alt=""></span><div class="p-body"><div class="p-name">杨枝甘露</div><div class="p-desc">#满记甜品 芒果西柚粒粒分明，冰爽清新</div></div><div class="p-right"><div class="p-prize">¥2</div><div class="p-boost-wrap"><span class="p-boost">24</span><span class="p-boost-label">助力</span></div></div></div>
+
+    <button class="rule-row" data-act="rules" style="--i:13">
+      <span>活动规则</span>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5 10.5 8 6 12.5"/></svg>
+    </button>
+
+  </main>
+
+  <div class="mask" data-mask aria-hidden="true"></div>
+
+  <section class="sheet" id="sheet-rules" aria-hidden="true" aria-label="活动规则">
+    <div class="sheet-bar"></div>
+    <div class="sheet-head">
+      <h2>活动规则</h2>
+      <button class="sheet-close" data-close aria-label="关闭">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 3l8 8M11 3l-8 8"/></svg>
+      </button>
+    </div>
+    <p class="sheet-meta">活动周期：每周一 00:00 – 周日 24:00</p>
+    <ol class="rules">
+      <li>每周上传奶茶账单晒单，好友通过页面帮你助力。</li>
+      <li>按本周助力总数排名，前 10 名获对应免单金额。</li>
+      <li>免单金额直接到账饭扫光积分，可在积分商城兑换现金券或提现。</li>
+      <li>同一微信号、手机号视为同一参赛账号，只计一次排名。</li>
+      <li>恶意刷助力账号一经查实，取消本周活动资格。</li>
+    </ol>
+    <button class="btn-primary" data-close>我知道了</button>
+  </section>
+
+  <section class="sheet" id="sheet-reward" aria-hidden="true" aria-label="奖励排行">
+    <div class="sheet-bar"></div>
+    <div class="sheet-head">
+      <h2>奖励排行</h2>
+      <button class="sheet-close" data-close aria-label="关闭">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 3l8 8M11 3l-8 8"/></svg>
+      </button>
+    </div>
+    <p class="sheet-meta">前 10 名分别奖励：</p>
+    <div class="reward-list">
+      <div class="reward-row"><div class="reward-info"><b>第1名</b><span>约覆盖午餐 80% 成本</span></div><div class="amount">¥15</div></div>
+      <div class="reward-row"><div class="reward-info"><b>第2–3名</b><span>约覆盖午餐 50% 成本</span></div><div class="amount">¥10</div></div>
+      <div class="reward-row"><div class="reward-info"><b>第4–6名</b><span>给午餐加个鸡腿</span></div><div class="amount">¥5</div></div>
+      <div class="reward-row"><div class="reward-info"><b>第7–10名</b><span>给午餐加个鸡蛋</span></div><div class="amount">¥2</div></div>
+    </div>
+    <button class="btn-primary" data-close>我知道了</button>
+  </section>
+
+  <div class="toast" id="toast" role="status"></div>
+
+</div>
+
+<script>
+(function(){
+  var d = document;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduce) {
+    d.querySelectorAll('#cd [data-cd]').forEach(function(el){
+      el.textContent = el.getAttribute('data-cd');
+    });
+  }
+
+  var tabData = {
+    cur:  { title:'本周免费榜', more:'共 62 人参赛', hero:'这周的奶茶<em>我请客!</em>' },
+    w1:   { title:'第2周免费榜', more:'共 48 人参赛 · 已结算', hero:'第2周<em>争霸榜</em>' },
+    w2:   { title:'第1周免费榜', more:'共 35 人参赛 · 已结算', hero:'第1周<em>争霸榜</em>' },
+    w3:   { title:'第0周免费榜', more:'共 29 人参赛 · 已结算', hero:'第0周<em>争霸榜</em>' }
+  };
+
+  function switchTab(key){
+    var td = tabData[key];
+    d.getElementById('rankTitle').textContent = td.title;
+    d.getElementById('rankMore').textContent = td.more;
+    d.querySelector('.h-title').innerHTML = td.hero;
+  }
+
+  // CTA 按钮已移除，定时器无需保留
+
+  d.addEventListener('click', function(e){
+    var tab = e.target.closest('.tab-btn');
+    if (tab){
+      d.querySelectorAll('.tab-btn').forEach(function(t){
+        t.classList.remove('on'); t.setAttribute('aria-selected','false');
+      });
+      tab.classList.add('on'); tab.setAttribute('aria-selected','true');
+      switchTab(tab.getAttribute('data-tab'));
+      return;
+    }
+    var t = e.target.closest('[data-act],[data-close],[data-mask]');
+    if (!t) return;
+    if (t.hasAttribute('data-mask') || t.hasAttribute('data-close')) { closeSheet(); return; }
+    var act = t.getAttribute('data-act');
+    if (act === 'rules') openSheet('sheet-rules');
+    else if (act === 'reward-list') openSheet('sheet-reward');
+    else if (act === 'back') toast('已返回上一页');
+  });
+
+  var mask = d.querySelector('[data-mask]');
+  var currentSheet = null;
+  var toastEl = d.getElementById('toast');
+  var toastTimer = null;
+
+  function openSheet(id){
+    closeSheet();
+    currentSheet = d.getElementById(id);
+    mask.classList.add('on');
+    currentSheet.classList.add('on');
+    currentSheet.setAttribute('aria-hidden', 'false');
+  }
+  function closeSheet(){
+    if (!currentSheet) { mask.classList.remove('on'); return; }
+    mask.classList.remove('on');
+    currentSheet.classList.remove('on');
+    currentSheet.setAttribute('aria-hidden', 'true');
+    currentSheet = null;
+  }
+  function toast(msg){
+    toastEl.textContent = msg;
+    toastEl.classList.add('on');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toastEl.classList.remove('on'); }, 1800);
+  }
+
+  d.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') closeSheet();
+  });
+})();
+</script>
+</body>
+</html>
