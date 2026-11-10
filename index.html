@@ -72,43 +72,68 @@ body{
   animation-delay:calc(var(--i,0) * 65ms)}
 @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 
-/* ── 活动主卡 ── */
-.hero{position:relative;padding:18px}
-.hero .h-title{margin-top:2px}
-.hero-tag{display:inline-flex;align-items:center;gap:5px;margin-top:10px;
-  padding:5px 10px;border-radius:999px;background:var(--green-soft);
-  font-size:11px;font-weight:700;color:var(--green-d);letter-spacing:.01em}
-.hero-tag svg{opacity:.85}
-.countdown-wrap{margin-top:14px;display:flex;align-items:center;gap:10px}
-.cd-dot{width:8px;height:8px;border-radius:50%;background:var(--green-d);
-  animation:pulse 1.8s ease-in-out infinite;flex:none}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
-.countdown{display:flex;align-items:baseline;gap:3px;flex-wrap:wrap}
-.cd-num{font-family:var(--num);font-size:30px;font-weight:700;letter-spacing:-.02em;
-  font-variant-numeric:tabular-nums;line-height:1;color:var(--green-d)}
-.cd-sep{font-family:var(--num);font-size:22px;font-weight:700;color:var(--ink-3);line-height:1;margin:0 2px}
-.cd-unit{font-size:10.5px;color:var(--ink-3);font-weight:600;margin-left:2px}
+/* ── 活动主卡 · Hero Banner（活动宣传例外场景） ── */
+.hero{position:relative;padding:22px 20px 18px;overflow:hidden;
+  background:linear-gradient(135deg, rgba(46,196,107,.1) 0%, rgba(46,196,107,.03) 38%, #fff 70%);
+  border:1px solid rgba(46,196,107,.15);box-shadow:0 4px 16px rgba(46,196,107,.12), 0 1px 3px rgba(20,24,30,.06)}
+/* 左上装饰小几何 */
+.hero::before{content:"";position:absolute;top:-20px;left:-20px;width:80px;height:80px;border-radius:50%;
+  background:radial-gradient(circle, rgba(46,196,107,.12) 0%, transparent 70%);pointer-events:none}
+/* 右下装饰 */
+.hero::after{content:"";position:absolute;bottom:-28px;right:-14px;width:100px;height:100px;border-radius:50%;
+  background:radial-gradient(circle, rgba(46,196,107,.07) 0%, transparent 70%);pointer-events:none}
 
-.hero-divider{height:1px;background:var(--line);margin:14px 0 12px}
+.hero .h-title{margin-top:4px;font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.28;
+  transform:rotate(-.6deg);display:inline-block}
+.hero .h-title em{font-style:normal;position:relative;z-index:0;color:var(--ink)}
+.hero .h-title em::after{content:"";position:absolute;left:-3px;right:-3px;bottom:2px;height:12px;
+  border-radius:3px;background:var(--green-d);opacity:.88;z-index:-1;
+  transform:rotate(.8deg)}
+
+.hero-tag{display:inline-flex;align-items:center;gap:5px;margin-top:12px;
+  padding:6px 11px;border-radius:999px;background:#fff;
+  border:1px solid rgba(46,196,107,.3);
+  font-size:11px;font-weight:700;color:var(--green-d);letter-spacing:.02em;
+  box-shadow:0 2px 6px rgba(46,196,107,.1)}
+.hero-tag svg{opacity:.9}
+
+.countdown-wrap{margin-top:16px;display:flex;align-items:center;gap:10px}
+.cd-dot{width:8px;height:8px;border-radius:50%;background:var(--green-d);
+  animation:pulse 1.8s ease-in-out infinite;flex:none;
+  box-shadow:0 0 0 3px rgba(46,196,107,.15)}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.75)}}
+
+.countdown{display:flex;align-items:baseline;gap:3px;flex-wrap:wrap}
+.cd-num{font-family:var(--num);font-size:34px;font-weight:800;letter-spacing:-.025em;
+  font-variant-numeric:tabular-nums;line-height:1;color:var(--green-d)}
+.cd-sep{font-family:var(--num);font-size:24px;font-weight:700;color:var(--green-d);opacity:.35;
+  line-height:1;margin:0 2px}
+.cd-unit{font-size:10px;color:var(--ink-3);font-weight:700;margin-left:3px;letter-spacing:.06em}
+
+.hero-divider{height:1px;background:repeating-linear-gradient(to right, var(--green) 0, var(--green) 4px, transparent 4px, transparent 10px);
+  margin:16px 0 12px;opacity:.35}
 
 .h-actions{display:flex;align-items:center;gap:8px}
-.h-btn{flex:1;height:36px;padding:0 14px;border-radius:999px;
-  border:1px solid var(--line-2);background:#fff;color:var(--ink-2);
-  font-family:var(--sans);font-size:12px;font-weight:700;cursor:pointer;
-  display:inline-flex;align-items:center;justify-content:center;gap:5px}
-.h-btn:active{background:#FCFCFD}
-.h-btn svg{color:var(--green-d);flex:none}
-.h-btn .btn-text{letter-spacing:.01em}
+.h-btn{flex:1;height:38px;padding:0 14px;border-radius:999px;cursor:pointer;
+  font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.01em;
+  display:inline-flex;align-items:center;justify-content:center;gap:5px;
+  transition:transform .1s ease, box-shadow .15s ease}
+.h-btn-primary{background:var(--green-d);color:#fff;border:0;
+  box-shadow:0 3px 10px rgba(46,196,107,.3), inset 0 -1px 0 rgba(0,0,0,.06)}
+.h-btn-primary:active{transform:translateY(1px);box-shadow:0 1px 4px rgba(46,196,107,.25)}
+.h-btn-primary svg{color:#fff}
+.h-btn-secondary{border:1px solid var(--line-2);background:#fff;color:var(--ink-2)}
+.h-btn-secondary:active{background:#FCFCFD}
+.h-btn svg{flex:none}
 
-.h-badge{position:absolute;right:22px;top:22px;width:72px;height:72px;border-radius:50%;
-  border:1.5px solid rgba(21,154,80,.52);color:var(--green-d);
+.h-badge{position:absolute;right:14px;bottom:14px;width:76px;height:76px;border-radius:50%;
+  border:1.5px dashed rgba(46,196,107,.55);color:var(--green-d);
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
-  transform:rotate(-7deg);user-select:none;background:rgba(255,255,255,.6);backdrop-filter:blur(4px)}
-.h-badge::before{content:"";position:absolute;inset:5px;border-radius:50%;
-  border:1px dashed rgba(21,154,80,.42)}
-.h-badge b{font-size:10.5px;font-weight:700;letter-spacing:.12em;line-height:1}
-.h-badge span{font-family:var(--num);font-size:8px;font-weight:700;letter-spacing:.14em;opacity:.72}
-.h-badge small{font-size:7px;font-weight:700;letter-spacing:.1em;opacity:.55;margin-top:2px}
+  transform:rotate(-10deg);user-select:none;background:rgba(255,255,255,.72);backdrop-filter:blur(6px);
+  box-shadow:0 4px 14px rgba(46,196,107,.12)}
+.h-badge b{font-size:10.5px;font-weight:700;letter-spacing:.14em;line-height:1}
+.h-badge span{font-family:var(--num);font-size:8px;font-weight:800;letter-spacing:.16em;opacity:.7}
+.h-badge small{font-size:7px;font-weight:700;letter-spacing:.12em;opacity:.5;margin-top:2px}
 
 /* ── Tab ── */
 .tab-bar{display:flex;align-items:center;gap:4px;padding:4px 0 2px}
@@ -228,12 +253,12 @@ body{
 .btn-primary .cta-text{display:inline-block;min-width:24px;transition:none}
 
 @media(max-width:360px){
-  .cd-num{font-size:26px}
+  .cd-num{font-size:28px}
   .photo{width:64px;height:64px;border-radius:14px}
   .avatar-wrap{width:34px;height:34px}
-  .h-title{font-size:21px}
-  .hero{padding:18px 18px 16px}
-  .h-badge{width:62px;height:62px;right:18px;top:18px}
+  .hero .h-title{font-size:22px}
+  .hero{padding:18px 16px 16px}
+  .h-badge{width:62px;height:62px;right:10px;bottom:10px}
 }
 @media(prefers-reduced-motion:reduce){
   *{animation-duration:.01ms!important;transition-duration:.01ms!important}
@@ -291,11 +316,11 @@ body{
       <div class="hero-divider"></div>
 
       <div class="h-actions">
-        <button class="h-btn" data-act="reward-list">
+        <button class="h-btn h-btn-primary" data-act="reward-list">
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 7c0-2 2-4 4-4s4 2 4 4v3H2z"/><path d="M4 4V3a2 2 0 0 1 4 0v1"/></svg>
           <span class="btn-text">奖励排行</span>
         </button>
-        <button class="h-btn" data-act="winners">
+        <button class="h-btn h-btn-secondary" data-act="winners">
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="6" cy="4.5" r="2.5"/><path d="M2.5 10.5c.8-1.2 2-2 3.5-2s2.7.8 3.5 2"/></svg>
           <span class="btn-text">中奖通知</span>
         </button>
