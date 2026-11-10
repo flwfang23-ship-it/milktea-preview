@@ -44,23 +44,24 @@ body{
 }
 
 .statusbar{display:flex;align-items:center;justify-content:space-between;
-  padding:13px 24px 0;font-size:12.5px;font-weight:700;letter-spacing:.01em;flex:none}
+  padding:13px 24px 0;font-size:12.5px;font-weight:700;letter-spacing:.01em;flex:none;
+  background:#FAF6F0}
 .sb-icons{display:flex;align-items:center;gap:5px;color:var(--ink)}
 .sb-icons svg{display:block}
 
 .appbar{display:flex;align-items:center;justify-content:space-between;gap:10px;
-  padding:12px 16px 8px;flex:none}
+  padding:12px 16px 10px;flex:none;background:#FAF6F0}
 .appbar h1{font-size:19px;font-weight:700;letter-spacing:-.01em;line-height:1.25;white-space:nowrap}
 .appbar h1 em{font-style:normal;position:relative;z-index:0}
 .appbar h1 em::after{content:"";position:absolute;left:-1px;right:-1px;bottom:2px;height:7px;
-  border-radius:3px;background:rgba(46,196,107,.24);z-index:-1}
+  border-radius:3px;background:rgba(201,169,110,.4);z-index:-1}
 .capsule{display:flex;align-items:center;gap:9px;height:30px;padding:0 10px;
-  border:1px solid var(--line-2);border-radius:999px;background:#fff;color:var(--ink-2);
+  border:1px solid #E0D5C2;border-radius:999px;background:#FDFBF7;color:var(--ink-2);
   pointer-events:none;flex:none}
-.capsule i{width:1px;height:12px;background:var(--line-2);display:block}
-.back-btn{width:34px;height:34px;border-radius:50%;border:1px solid var(--line-2);
-  background:#fff;display:grid;place-items:center;color:var(--ink-2);cursor:pointer;flex:none}
-.back-btn:active{background:#FCFCFD}
+.capsule i{width:1px;height:12px;background:#E0D5C2;display:block}
+.back-btn{width:34px;height:34px;border-radius:50%;border:1px solid #E0D5C2;
+  background:#FDFBF7;display:grid;place-items:center;color:var(--ink-2);cursor:pointer;flex:none}
+.back-btn:active{background:#F3EDE2}
 
 .page{flex:1;overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;gap:12px;
   padding:6px 16px 30px;scrollbar-width:none}
@@ -141,7 +142,7 @@ body{
 /* ── Tab ── */
 .tab-bar{display:flex;align-items:center;gap:4px;padding:10px 16px 8px;margin:0 -16px;
   position:sticky;top:0;z-index:6;
-  background:rgba(247,247,247,.92);backdrop-filter:blur(8px)}
+  background:var(--bg);border-bottom:1px solid var(--line)}
 .tab-btn{flex:none;height:32px;padding:0 12px;border-radius:999px;
   border:0;background:transparent;color:var(--ink-3);
   font-family:var(--sans);font-size:13px;font-weight:700;cursor:pointer;
