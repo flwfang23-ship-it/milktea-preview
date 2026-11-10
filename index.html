@@ -124,13 +124,13 @@ body{
 .sec-more{font-size:11.5px;color:var(--ink-3)}
 
 /* ── 排行项目（排名头像融合） ── */
-.p-row{display:flex;align-items:center;gap:12px;padding:14px 14px;cursor:pointer;min-height:92px;
+.p-row{display:flex;align-items:center;gap:14px;padding:16px 16px;cursor:pointer;min-height:104px;
   background:var(--card);border-radius:var(--r-md);box-shadow:var(--shadow);
   animation:rise .46s cubic-bezier(.2,.8,.3,1) both;animation-delay:calc(var(--i,0) * 65ms)}
 .p-row:active{background:#FCFCFD}
 
 /* 头像容器：排名叠在左下角 */
-.avatar-wrap{position:relative;width:38px;height:38px;flex:none}
+.avatar-wrap{position:relative;width:44px;height:44px;flex:none}
 .avatar{width:100%;height:100%;border-radius:50%;overflow:hidden;
   border:1.5px solid var(--line);background:#fff;display:block}
 .avatar img{width:100%;height:100%;object-fit:cover;display:block}
@@ -145,14 +145,14 @@ body{
 .rank-badge.top-1{min-width:20px;height:18px;font-size:10px;
   background:var(--green-d);color:#fff}
 
-.photo{width:80px;height:80px;border-radius:16px;flex:none;overflow:hidden;
+.photo{width:96px;height:96px;border-radius:18px;flex:none;overflow:hidden;
   background:var(--bg)}
 .photo img{width:100%;height:100%;object-fit:cover;display:block}
 .p-body{flex:1;min-width:0;padding-right:6px}
 .p-name{font-size:14px;font-weight:700;letter-spacing:-.01em}
 .p-desc{margin-top:4px;font-size:11.5px;color:var(--ink-3);
   display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;
-  overflow:hidden;line-height:1.4}
+  overflow:hidden;line-height:1.5}
 .p-right{flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:3px}
 .p-prize{font-family:var(--num);font-size:15px;font-weight:700;color:var(--green-d);
   font-variant-numeric:tabular-nums;line-height:1;letter-spacing:-.01em}
